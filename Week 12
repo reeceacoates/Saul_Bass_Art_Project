@@ -1,0 +1,47 @@
+angle = 0
+
+def setup():
+    size(600, 600)
+    stroke(255)
+    strokeWeight(2)
+    noFill()
+
+def draw():
+    
+    global angle
+    background(254, 44, 2)  # background color
+
+    translate(width/2, height/2)
+    circle(0, 0, 425)
+    
+    
+    num_spirals = 30        # number of layered spirals
+    rotation_step = PI / 3  # small rotation offset between spirals
+
+    for s in range(num_spirals):
+        pushMatrix()
+        rotate(angle + s * rotation_step)  # rotate each spiral a bit more
+
+        for i in range(2200):
+            t = radians(0.5 * i)
+            r = 0.00000002 * (i ** 3)
+            x = r * cos(t)
+            y = r * sin(t)
+            point(x, y)
+
+        popMatrix()
+
+    # draw the still image at center
+    img = loadImage("WORK-2.png")
+    imageMode(CENTER)
+    image(img, 0, 0, 200, 200)  # centered (already translated)
+    
+    
+    resetMatrix()  # back to top-left coordinates
+    img2 = loadImage("VERTIGO.png")
+    imageMode(CENTER)
+    image(img2, width/2, height - 80, img2.width/2, img2.height/2)
+
+
+    # slowly rotate the whole spiral set
+    angle += 0.1

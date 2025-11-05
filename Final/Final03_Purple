@@ -1,0 +1,48 @@
+# needed files: person.png
+angle = 0
+img = None   # will store image once
+
+def setup():
+    global img
+    size(600, 600)
+    stroke(255)
+    strokeWeight(2)
+    noFill()
+
+    # Load once
+    img = loadImage("person.png")
+    imageMode(CENTER)
+
+def draw():
+    global angle
+    background(132, 50, 200)
+
+    # --- SPIRALS ---
+    pushMatrix()
+    translate(width/2, height/2)
+    rotate(angle)
+
+    stroke(255)
+
+    # First spiral
+    for i in range(6000):     # reduced count = smoother
+        t = radians(0.5 * i)
+        r = 0.00000002 * (i**3)
+        x = r * cos(t)
+        y = r * sin(t)
+        point(x, y)
+
+    # Second spiral
+    for i in range(6000):
+        t = radians(5 * i)
+        x = t * cos(t)
+        y = t * sin(t)
+        point(x, y)
+
+    popMatrix()
+    
+    # --- CENTER IMAGE ---
+    image(img, width/2, height/2, 200, 200)
+
+    # --- ANIMATION ---
+    angle += 0.01

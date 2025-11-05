@@ -1,0 +1,45 @@
+# imgs needed: person.png, VERTIGO.png
+
+angle = 0  # rotation angle
+person_img = None
+vertigo_img = None
+
+def setup():
+    global person_img, vertigo_img
+    size(600, 600)
+    stroke(255)
+    strokeWeight(2)
+    noFill()
+
+    # Load images once
+    person_img = loadImage("person.png")
+    vertigo_img = loadImage("VERTIGO.png")
+
+    imageMode(CENTER)
+
+
+def draw():
+    global angle
+    background(132, 50, 200)
+
+    # ---- SPIRAL ----
+    pushMatrix()
+    translate(width/2, height/2)
+    rotate(angle)
+
+    for i in range(10000):
+        t = radians(1.5 * i)
+        x = (1.5) * t * cos(0.5 * t)
+        y = (1.1) * t * sin(0.5 * t)
+        point(x, y)
+
+    popMatrix()
+
+    # ---- CENTER PERSON IMAGE ----
+    image(person_img, width/2, height/2, 200, 200)
+
+    # ---- BOTTOM VERTIGO IMAGE ----
+    image(vertigo_img, width/2, height - 60, vertigo_img.width * 0.5, vertigo_img.height * 0.5)
+
+    # ---- ANIMATION ----
+    angle += 0.01

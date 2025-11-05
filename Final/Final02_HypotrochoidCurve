@@ -1,0 +1,61 @@
+# needed files: person.png
+angle = 0
+t_offset = 0
+
+def setup():
+    global img
+    size(800, 800)
+    stroke(255)
+    noFill()
+    strokeWeight(1.5)
+
+    # Load image once
+    img = loadImage("person.png")  
+
+def draw():
+    global angle, t_offset
+
+    background(234, 60, 36)   # Vertigo red-orange
+    translate(width/2, height/2)
+
+    # ---- HYPOTROCHOID PARAMETERS ----
+    R = 250
+    r = 80
+    d = 200 + 40 * sin(t_offset * 0.8)   # breathing motion
+
+    num_layers = 42
+    rotation_step = 0.05
+
+    # ---- DRAW LAYERS ----
+    stroke(255)
+    noFill()
+
+    for s in range(num_layers):
+        pushMatrix()
+        rotate(angle + s * rotation_step)
+
+        beginShape()
+        for t in range(0, 7200, 3):   # 0–7200 steps
+            theta = radians(t)
+            x = (R - r) * cos(theta) + d * cos(((R - r) / r) * theta + t_offset)
+            y = (R - r) * sin(theta) - d * sin(((R - r) / r) * theta + t_offset)
+            vertex(x, y)
+        endShape()
+        popMatrix()
+
+    # ---- CENTRAL HOLE ----
+    pushStyle()
+    noStroke()
+    fill(234, 60, 36)
+    circle(0, 0, 100)
+    popStyle()
+
+    # ---- CENTER IMAGE ----
+    imageMode(CENTER)
+    tint(255, 230)   # slight transparency
+    image(img, 0, 0, 220, 220)
+    noTint()
+
+    # ---- ANIMATION ----
+    angle += 50
+    t_offset += 0.003

@@ -1,0 +1,56 @@
+# needed downloads in files: "person.png", "VERTIGO.png"
+angle = 0
+
+# global images
+img_person = None
+img_title = None
+
+def setup():
+    global img_person, img_title
+    size(600, 600)
+    
+    stroke(255)
+    strokeWeight(2)
+    noFill()
+    imageMode(CENTER)
+
+    # Load images once
+    img_person = loadImage("person.png")
+    img_title  = loadImage("VERTIGO.png")
+
+
+def draw():
+    global angle
+    background(254, 44, 2)   # background color
+
+    # --- CENTER SPIRALS ---
+    translate(width/2, height/2)
+
+    circle(0, 0, 425)
+
+    num_spirals = 30
+    rotation_step = PI / 3
+
+    for s in range(num_spirals):
+        pushMatrix()
+        rotate(angle + s * rotation_step)
+
+        for i in range(2200):
+            t = radians(0.5 * i)
+            r = 0.00000002 * (i ** 3)
+            x = r * cos(t)
+            y = r * sin(t)
+            point(x, y)
+
+        popMatrix()
+
+    # --- draw person image at center ---
+    image(img_person, 0, 0, 200, 200)
+
+    # --- draw title image near bottom ---
+    resetMatrix()
+    imageMode(CENTER)
+    image(img_title, width/2, height - 80, img_title.width/2, img_title.height/2)
+
+    # --- animation: rotate spirals slowly ---
+    angle += 0.1

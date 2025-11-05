@@ -1,56 +1,55 @@
-# needed downloads in files: "person.png", "VERTIGO.png"
-angle = 0
+# This sketch recreates a Saul Bass-inspired Vertigo spiral
+# Files needed: "person.png", "VERTIGO.png"
 
-# global images
+angle = 0  # rotation angle for the spirals
+
+# global variables for images
 img_person = None
 img_title = None
 
 def setup():
     global img_person, img_title
-    size(600, 600)
-    
-    stroke(255)
+    size(600, 600)  # canvas size
+    stroke(255)  # white stroke for spiral lines
     strokeWeight(2)
-    noFill()
-    imageMode(CENTER)
+    noFill()  # no fill for geometric shapes
+    imageMode(CENTER)  # draw images from their centre
 
-    # Load images once
+    # load images once to optimise performance
     img_person = loadImage("person.png")
     img_title  = loadImage("VERTIGO.png")
 
-
 def draw():
     global angle
-    background(254, 44, 2)   # background color
+    background(254, 44, 2)  # bright red-orange background, inspired by Vertigo poster
 
-    # --- CENTER SPIRALS ---
-    translate(width/2, height/2)
-
-    circle(0, 0, 425)
+    # --- SPIRALS ---
+    translate(width/2, height/2)  # move origin to centre
+    circle(0, 0, 425)  # large circle to frame the spiral
 
     num_spirals = 30
-    rotation_step = PI / 3
+    rotation_step = PI / 3  # spacing rotation for multiple spiral layers
 
     for s in range(num_spirals):
-        pushMatrix()
-        rotate(angle + s * rotation_step)
+        pushMatrix()  # save the current transformation state
+        rotate(angle + s * rotation_step)  # rotate each spiral layer
 
         for i in range(2200):
-            t = radians(0.5 * i)
-            r = 0.00000002 * (i ** 3)
+            t = radians(0.5 * i)  # angle in radians
+            r = 0.00000002 * (i ** 3)  # radius grows cubically for Bass-style curvature
             x = r * cos(t)
             y = r * sin(t)
-            point(x, y)
+            point(x, y)  # draw each point in the spiral
 
-        popMatrix()
+        popMatrix()  # restore previous transformation
 
-    # --- draw person image at center ---
+    # --- Draw person at centre ---
     image(img_person, 0, 0, 200, 200)
 
-    # --- draw title image near bottom ---
-    resetMatrix()
+    # --- Draw title near bottom ---
+    resetMatrix()  # reset rotation and translation
     imageMode(CENTER)
     image(img_title, width/2, height - 80, img_title.width/2, img_title.height/2)
 
-    # --- animation: rotate spirals slowly ---
+    # --- Rotate spirals slowly to animate ---
     angle += 0.1
